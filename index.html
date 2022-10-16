@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="/style.css"/> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+
+    <style >
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap'); */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    font-family: "Roboto" , sans-serif;
+    font-weight: 300;
+
+}
+
+html{
+    font-size: 62.5%;
+}
+
+.main-section{
+    width: 100vw;
+    min-height: 100vh;
+    display: grid;
+    font-size: 1.7rem;
+    place-items: center;
+    background-color: #94e1c7;
+}
+
+.inner-section{
+    width: 40vw;
+    height: auto;
+    background-color: #fff;
+    padding-left: 4rem;
+    padding-top: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 1rem 1rem grey;
+}
+
+.inner-section h2{
+    font-size: 3.5rem;
+    font-weight: 400;
+    margin: 1rem 0 4rem 0;
+}
+
+.inner-section ul {
+    list-style: none;
+}
+
+.inner-section li{
+    font-size: 1.8rem;
+    margin-top: 1.5rem;
+}
+ 
+input{
+    cursor: pointer;
+}
+
+.submit-btn{
+    text-align: center;
+}
+
+.submit-btn button{
+    
+    margin-top: 2rem;
+    outline: none;
+    width: 10rem;
+    font-size:2rem;
+    font-weight: 400;
+    text-align: center;
+    border:none;
+    text-transform: uppercase;
+    color:#fff;
+    background-color: #74b9ff;
+    display: block;
+    height: 4rem;
+}
+
+.submit-btn :hover{
+  background-color: #0984e3;
+}
+
+#scoreCard{
+    background-color: #dfe6e9;
+    margin-top: 3rem;
+    margin-right: 3rem;
+    text-align: center;
+    padding:3rem 4rem;
+    padding-right: 3rem;
+    
+    box-shadow: 0 1rem 1rem grey;
+}
+
+.scoreArea{
+    display: none;
+}
+
+.playagain{
+    outline: none;
+    width: 13rem;
+    height: 2rem;
+    /* font-size:5rem; */
+    font-weight: 400;
+    text-align: center;
+    border:none;
+    text-transform: uppercase;
+    color:#fff;
+    background-color:  #3cd5a2;
+    display: block;
+    height: 4rem;
+}
+
+.playagain:hover{
+    background-color: #3fa997;
+}
+    </style>
+
+  </head>
+  <body>
+    <div class="main-section conatiner">
+      <div class="inner-section">
+        <h2 class="question">Question Comes here</h2>
+        <ul>
+          <li>
+            <input type="radio" name="answer" id="firstans" class="answer" />
+            <label for="firstans" id="option1">Answer1</label>
+          </li>
+          <li>
+            <input type="radio" name="answer" id="secondans" class="answer" />
+            <label for="secondans" id="option2">Answer2</label>
+          </li>
+          <li>
+            <input type="radio" name="answer" id="thidans" class="answer" />
+            <label for="thirdans" id="option3">Answer3</label>
+          </li>
+          <li>
+            <input type="radio" name="answer" id="forthans" class="answer" />
+            <label for="forthans" id="option4">Answer4</label>
+          </li>
+        </ul>
+        <div class="submit-btn">
+          <button id="submit" type="'submit">Submit</button>
+        </div>  
+        <div id="scoreCard" class="scoreArea">
+        </div>
+        <br></br>
+      </div>  
+    </div>
+
+    <script>
+      const quizDB =  [
+   
+   { 
+       question: "Q1: What is the full form of HTML?",
+       a: "Hello To My Land",
+       b: "Hey Text Markup Language",
+       c: "HyperText Makeup Language",
+       d: "Hypertext Markup Language",
+       ans: "ans4"
+    },
+    { 
+       question: "Q2: What is the full form of CSS?",
+       a: "Cascading Style Sheets",
+       b: "Casadind super sheets ",
+       c: "Cascading Super Style ",
+       d: "Cascading style Super ",
+       ans: "ans4"
+    }
+    ,
+    { 
+       question: "Q3: Which is the most popular lanuage of Web Application?",
+       a: "Java",
+       b: "JavaScript",
+       c: "C++",
+       d: "C ",
+       ans: "ans4"
+    }, 
+    { 
+       question: "Q4: Which is the Capital of India ?",
+       a: "Jaipur",
+       b: "Mumbai",
+       c: "Lucknow ",
+       d: "Delhi",
+       ans: "ans4"
+    },
+    {  
+       question: "Q5: Who is the father of Computer ?",
+       a: "Charles Babbage",
+       b: "Gram Bell ",
+       c: "Isaac Newton ",
+       d: "Bill Gate ",
+       ans: "ans4"
+    }
+
+      
+];
+
+const question = document.querySelector('.question');
+const option1 = document.querySelector('#option1');
+const option2 = document.querySelector('#option2');
+const option3 = document.querySelector('#option3');
+const option4 = document.querySelector('#option4');
+const submit = document.querySelector('#submit');
+
+let questionCount = 0;
+let score = 0;
+
+const answers = document.querySelectorAll('.answer');
+
+const scoreCard = document.querySelector('#scoreCard')
+
+const loadquestion = () => {
+  
+   const questionList = quizDB[questionCount];
+
+   question.innerHTML = questionList.question
+   option1.innerHTML = questionList.a
+   option2.innerHTML = questionList.b
+   option3.innerHTML = questionList.c
+   option4.innerHTML = questionList.d
+}
+
+loadquestion();
+
+const getCheckAnswer = () => {
+   let answer ;
+
+   answers.forEach(curElemAns => {
+       if(curElemAns.checked){
+           answer = curElemAns.id;
+       }
+     
+   });
+   return answer;
+}
+
+const deselect = () => {
+   answers.forEach((curElemAns) => curElemAns.checked = false )
+}
+
+submit.addEventListener('click' , () => {
+   const checkedAnswer = getCheckAnswer();
+   console.log(checkedAnswer);
+
+   if(checkedAnswer === quizDB[questionCount].ans){
+       score + 1;
+   }
+
+   questionCount++;
+
+   deselect();
+
+   if(questionCount < quizDB.length){
+       loadquestion();
+   }
+   else {
+       scoreCard.innerHTML = `
+       
+       <button class="playagain btn" onClick="location.reload()"> Play Again </button>
+       `
+       scoreCard.classList.remove('scoreArea');
+   }
+
+})
+
+    </script>
+  </body>
+</html>
